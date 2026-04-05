@@ -6,19 +6,27 @@ import {
   Param,
   Query,
   UseGuards,
-  ParseIntPipe,
   Sse,
   MessageEvent,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { UserEntity } from '@tts-saas/database';
 import { TtsService } from './tts.service';
 import { CreateTtsJobDto } from './dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Observable, Subject, interval, map, merge } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { TtsJobStatus } from '@tts-saas/shared-types';
 
+@ApiTags('TTS')
+@ApiBearerAuth('JWT-auth')
 @Controller('tts')
 @UseGuards(JwtAuthGuard)
 export class TtsController {
@@ -82,6 +90,15 @@ export class TtsController {
   }
 
   @Post('generate')
+  @ApiOperation({
+    summary: 'Generate TTS audio',
+    description: 'Create a new text-to-speech job and queue for processing',
+  })
+  @ApiResponse({ status: 201, description: 'Job created successfully' })
+  @ApiResponse({
+    status: 400,
+    description: 'Insufficient credits or invalid input',
+  })
   async generate(
     @CurrentUser() user: UserEntity,
     @Body() dto: CreateTtsJobDto,
@@ -96,6 +113,13 @@ export class TtsController {
   }
 
   @Get('jobs')
+  @ApiOperation({
+    summary: 'Get TTS jobs',
+    description: 'Get paginated list of user TTS jobs',
+  })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiResponse({ status: 200, description: 'Jobs retrieved successfully' })
   async getJobs(
     @CurrentUser() user: UserEntity,
     @Query('page') page?: string,
@@ -123,6 +147,12 @@ export class TtsController {
   }
 
   @Get('jobs/:jobId')
+  @ApiOperation({
+    summary: 'Get TTS job details',
+    description: 'Get details of a specific TTS job',
+  })
+  @ApiResponse({ status: 200, description: 'Job retrieved successfully' })
+  @ApiResponse({ status: 404, description: 'Job not found' })
   async getJob(@CurrentUser() user: UserEntity, @Param('jobId') jobId: string) {
     const job = await this.ttsService.getJobStatus(jobId, user.id);
     return {
@@ -141,6 +171,11 @@ export class TtsController {
   }
 
   @Sse('jobs/:jobId/stream')
+  @ApiOperation({
+    summary: 'Stream job progress',
+    description: 'SSE endpoint for real-time job progress updates',
+  })
+  @ApiResponse({ status: 200, description: 'SSE stream established' })
   streamProgress(@Param('jobId') jobId: string): Observable<MessageEvent> {
     const subject = new Subject<MessageEvent>();
     this.jobProgressMap.set(jobId, subject);
