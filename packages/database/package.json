@@ -1,0 +1,28 @@
+{
+  "name": "@tts-saas/database",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint \"src/**/*.ts\"",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate -d dist/config.js",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d dist/config.js",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d dist/config.js",
+    "migration:run:dev": "ts-node -r tsconfig-paths/register -r reflect-metadata node_modules/typeorm/cli.js migration:run -d src/config.ts",
+    "migration:generate:dev": "ts-node -r tsconfig-paths/register -r reflect-metadata node_modules/typeorm/cli.js migration:generate -d src/config.ts"
+  },
+  "dependencies": {
+    "@tts-saas/shared-types": "workspace:*",
+    "mysql2": "^3.11.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "5.9.2"
+  }
+}
