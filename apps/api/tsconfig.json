@@ -20,6 +20,10 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@tts-saas/shared-types": ["../packages/shared-types/src"],
+      "@tts-saas/database": ["../packages/database/src"]
+    }
   }
 }
