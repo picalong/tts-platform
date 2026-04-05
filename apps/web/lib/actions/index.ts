@@ -6,3 +6,9 @@ export {
   getCreditHistory,
   getSubscriptionTiers,
 } from "./credits-actions";
+export {
+  generateTtsAction,
+  getTtsJobsAction,
+  getTtsJobStatusAction,
+  getVoicesAction,
+} from "./tts-actions";
