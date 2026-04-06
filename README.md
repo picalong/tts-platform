@@ -41,14 +41,14 @@ To build all apps and packages, run the following command:
 With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
 
 ```sh
-cd my-turborepo
+cd tts-platform
 turbo build
 ```
 
 Without global `turbo`, use your package manager:
 
 ```sh
-cd my-turborepo
+cd tts-platform
 npx turbo build
 yarn dlx turbo build
 pnpm exec turbo build
@@ -77,14 +77,14 @@ To develop all apps and packages, run the following command:
 With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
 
 ```sh
-cd my-turborepo
+cd tts-platform
 turbo dev
 ```
 
 Without global `turbo`, use your package manager:
 
 ```sh
-cd my-turborepo
+cd tts-platform
 npx turbo dev
 yarn exec turbo dev
 pnpm exec turbo dev
@@ -118,14 +118,14 @@ By default, Turborepo will cache locally. To enable Remote Caching you will need
 With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
 
 ```sh
-cd my-turborepo
+cd tts-platform
 turbo login
 ```
 
 Without global `turbo`, use your package manager:
 
 ```sh
-cd my-turborepo
+cd tts-platform
 npx turbo login
 yarn exec turbo login
 pnpm exec turbo login
