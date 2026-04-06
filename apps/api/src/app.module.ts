@@ -4,11 +4,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { APP_GUARD } from '@nestjs/core';
 import { AppDataSource } from '@tts-saas/database';
+import {
+  UserEntity,
+  TtsJobEntity,
+  VoiceEntity,
+  CreditTransactionEntity,
+} from '@tts-saas/database';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CreditsModule } from './credits/credits.module';
 import { SubscriptionModule } from './subscriptions/subscription.module';
 import { TtsModule } from './tts/tts.module';
+import { StorageModule } from './storage/storage.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
@@ -24,7 +31,12 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
       username: process.env.MYSQL_USER || 'tts_user',
       password: process.env.MYSQL_PASSWORD || 'tts_password',
       database: process.env.MYSQL_DATABASE || 'tts_saas',
-      entities: [],
+      entities: [
+        UserEntity,
+        TtsJobEntity,
+        VoiceEntity,
+        CreditTransactionEntity,
+      ],
       synchronize: false,
       logging: process.env.NODE_ENV === 'development',
     }),
@@ -34,6 +46,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     CreditsModule,
     SubscriptionModule,
     TtsModule,
+    StorageModule,
   ],
   providers: [
     {

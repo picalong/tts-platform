@@ -125,10 +125,12 @@ export class TtsController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
+    const pageNum = page ? parseInt(page, 10) : 1;
+    const limitNum = limit ? parseInt(limit, 10) : 20;
     const result = await this.ttsService.getUserJobs(
       user.id,
-      page ? parseInt(page, 10) : 1,
-      limit ? parseInt(limit, 10) : 20,
+      isNaN(pageNum) ? 1 : pageNum,
+      isNaN(limitNum) ? 20 : limitNum,
     );
 
     return {
@@ -141,8 +143,8 @@ export class TtsController {
         createdAt: job.createdAt,
       })),
       total: result.total,
-      page: page ? parseInt(page, 10) : 1,
-      limit: limit ? parseInt(limit, 10) : 20,
+      page: isNaN(pageNum) ? 1 : pageNum,
+      limit: isNaN(limitNum) ? 20 : limitNum,
     };
   }
 
@@ -181,5 +183,16 @@ export class TtsController {
     this.jobProgressMap.set(jobId, subject);
 
     return subject.asObservable();
+  }
+
+  @Get('voices')
+  @ApiOperation({
+    summary: 'Get available voices',
+    description: 'Get list of all available TTS voices',
+  })
+  @ApiResponse({ status: 200, description: 'Voices retrieved successfully' })
+  async getVoices() {
+    const voices = await this.ttsService.getVoices();
+    return { voices };
   }
 }

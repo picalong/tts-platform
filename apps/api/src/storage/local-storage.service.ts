@@ -26,7 +26,7 @@ export class LocalStorageService implements IStorageService {
   }
 
   async getSignedUrl(key: string, expiresIn = 3600): Promise<string> {
-    const baseUrl = process.env.WEB_URL || 'http://localhost:3000';
+    const baseUrl = process.env.API_URL || 'http://localhost:3001';
     const signedUrl = `${baseUrl}/api/audio/${key}?expires=${Date.now() + expiresIn * 1000}`;
 
     this.logger.debug(`Generated signed URL for: ${key}`);

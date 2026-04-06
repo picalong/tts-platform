@@ -4,16 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '@tts-saas/database';
 import { SubscriptionTier } from '@tts-saas/shared-types';
+import { TIER_CREDITS } from '../subscriptions/stripe.service';
 
 @Injectable()
 export class CreditResetService implements OnModuleInit {
   private readonly logger = new Logger(CreditResetService.name);
-
-  private readonly TIER_CREDITS: Record<SubscriptionTier, number> = {
-    [SubscriptionTier.FREE]: 1000,
-    [SubscriptionTier.PRO]: 10000,
-    [SubscriptionTier.ENTERPRISE]: 100000,
-  };
 
   constructor(
     @InjectRepository(UserEntity)
@@ -36,7 +31,8 @@ export class CreditResetService implements OnModuleInit {
     let resetCount = 0;
     for (const user of users) {
       try {
-        const newCredits = this.TIER_CREDITS[user.tier];
+        const tierCredits = TIER_CREDITS[user.tier as SubscriptionTier];
+        const newCredits = tierCredits.monthly;
         await this.usersRepository.update(user.id, { credits: newCredits });
         resetCount++;
       } catch (error) {
@@ -49,5 +45,13 @@ export class CreditResetService implements OnModuleInit {
     this.logger.log(
       `Monthly credit reset completed. Reset ${resetCount} users.`,
     );
+  }
+
+  getDailyLimit(tier: SubscriptionTier): number {
+    return TIER_CREDITS[tier].daily;
+  }
+
+  getMonthlyLimit(tier: SubscriptionTier): number {
+    return TIER_CREDITS[tier].monthly;
   }
 }

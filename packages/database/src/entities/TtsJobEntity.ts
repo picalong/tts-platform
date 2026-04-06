@@ -3,16 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  Index,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { TtsJobStatus } from "@tts-saas/shared-types";
-import { UserEntity } from "./UserEntity";
 
 @Entity("tts_jobs")
-@Index(["userId", "createdAt"])
 export class TtsJobEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -37,7 +33,6 @@ export class TtsJobEntity {
     enum: TtsJobStatus,
     default: TtsJobStatus.PENDING,
   })
-  @Index()
   status!: TtsJobStatus;
 
   @Column({ name: "audio_url", type: "varchar", length: 1024, nullable: true })
@@ -52,9 +47,6 @@ export class TtsJobEntity {
 
   @Column({ name: "credit_cost", type: "decimal", precision: 10, scale: 2 })
   creditCost!: number;
-
-  @ManyToOne(() => UserEntity, (user) => user.ttsJobs, { onDelete: "CASCADE" })
-  user!: UserEntity;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;

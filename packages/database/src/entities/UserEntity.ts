@@ -3,13 +3,10 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { SubscriptionTier } from "@tts-saas/shared-types";
-import { TtsJobEntity } from "./TtsJobEntity";
-import { CreditTransactionEntity } from "./CreditTransactionEntity";
 
 @Entity("users")
 export class UserEntity {
@@ -50,12 +47,6 @@ export class UserEntity {
     nullable: true,
   })
   stripeSubscriptionId!: string | null;
-
-  @OneToMany(() => TtsJobEntity, (ttsJob) => ttsJob.user)
-  ttsJobs!: TtsJobEntity[];
-
-  @OneToMany(() => CreditTransactionEntity, (tx) => tx.user)
-  creditTransactions!: CreditTransactionEntity[];
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;

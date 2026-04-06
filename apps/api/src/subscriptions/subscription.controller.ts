@@ -17,6 +17,7 @@ import {
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { SubscriptionService } from './subscription.service';
+import { StripeService } from './stripe.service';
 import { UserEntity } from '@tts-saas/database';
 import { SubscriptionTier } from '@tts-saas/shared-types';
 
@@ -25,7 +26,10 @@ import { SubscriptionTier } from '@tts-saas/shared-types';
 @Controller('subscriptions')
 @UseGuards(JwtAuthGuard)
 export class SubscriptionController {
-  constructor(private subscriptionService: SubscriptionService) {}
+  constructor(
+    private subscriptionService: SubscriptionService,
+    private stripeService: StripeService,
+  ) {}
 
   @Get('tiers')
   @ApiOperation({
@@ -48,6 +52,45 @@ export class SubscriptionController {
   })
   async getCurrentSubscription(@CurrentUser() user: UserEntity) {
     return this.subscriptionService.getUserSubscription(user.id);
+  }
+
+  @Post('checkout')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Create checkout session',
+    description: 'Create Stripe checkout session for subscription upgrade',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        tier: { type: 'string', enum: ['pro', 'enterprise'], example: 'pro' },
+      },
+    },
+  })
+  @ApiResponse({ status: 200, description: 'Checkout session created' })
+  async createCheckoutSession(
+    @CurrentUser() user: UserEntity,
+    @Body('tier') tier: string,
+  ) {
+    if (!this.subscriptionService.isValidTier(tier)) {
+      return { success: false, error: 'Invalid tier' };
+    }
+    return this.stripeService.createCheckoutSession(
+      user.id,
+      tier as SubscriptionTier,
+    );
+  }
+
+  @Post('portal')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Create customer portal session',
+    description: 'Create Stripe billing portal session',
+  })
+  @ApiResponse({ status: 200, description: 'Portal session created' })
+  async createPortalSession(@CurrentUser() user: UserEntity) {
+    return this.stripeService.createCustomerPortalSession(user.id);
   }
 
   @Post('upgrade')

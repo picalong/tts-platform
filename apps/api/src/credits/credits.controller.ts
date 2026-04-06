@@ -59,16 +59,18 @@ export class CreditsController {
     @Query('page') page?: string,
     @Query('limit') limit?: string,
   ) {
+    const pageNum = page ? parseInt(page, 10) : 1;
+    const limitNum = limit ? parseInt(limit, 10) : 20;
     const result = await this.creditsService.getTransactionHistory(
       user.id,
-      page ? parseInt(page, 10) : 1,
-      limit ? parseInt(limit, 10) : 20,
+      isNaN(pageNum) ? 1 : pageNum,
+      isNaN(limitNum) ? 20 : limitNum,
     );
     return {
       transactions: result.data,
       total: result.total,
-      page: page ? parseInt(page, 10) : 1,
-      limit: limit ? parseInt(limit, 10) : 20,
+      page: isNaN(pageNum) ? 1 : pageNum,
+      limit: isNaN(limitNum) ? 20 : limitNum,
     };
   }
 

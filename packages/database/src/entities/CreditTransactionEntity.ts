@@ -3,14 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   Index,
-  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { TransactionType } from "@tts-saas/shared-types";
-import { UserEntity } from "./UserEntity";
 
 @Entity("credit_transactions")
-@Index(["userId", "createdAt"])
 export class CreditTransactionEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
@@ -45,11 +42,6 @@ export class CreditTransactionEntity {
     nullable: true,
   })
   referenceId!: string | null;
-
-  @ManyToOne(() => UserEntity, (user) => user.creditTransactions, {
-    onDelete: "CASCADE",
-  })
-  user!: UserEntity;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;

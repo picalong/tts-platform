@@ -156,11 +156,13 @@ export class CreditsService {
     page = 1,
     limit = 20,
   ): Promise<{ data: CreditTransactionEntity[]; total: number }> {
+    const pageNum = isNaN(page) ? 1 : Math.max(1, page);
+    const limitNum = isNaN(limit) ? 20 : Math.max(1, limit);
     const [data, total] = await this.transactionsRepository.findAndCount({
       where: { userId },
       order: { createdAt: 'DESC' },
-      skip: (page - 1) * limit,
-      take: limit,
+      skip: (pageNum - 1) * limitNum,
+      take: limitNum,
     });
 
     return { data, total };
