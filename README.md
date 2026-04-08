@@ -1,27 +1,33 @@
 <img width="2880" height="2168" alt="image" src="https://github.com/user-attachments/assets/19e4ebf2-5968-493e-9d93-54342728d9df" />
 
-📖 Overview
+## 📖 Overview
 TTS SaaS Platform is an open-source Text-to-Speech conversion platform powered by artificial intelligence, providing a complete SaaS solution with multiple leading voice providers including Google Cloud, Microsoft Azure, and OpenAI.
+
 This project is built to deliver natural-sounding, multi-language voice generation at affordable costs, suitable for both individuals and businesses.
-✨ Key Features
-🎯 Core Features
-AI-Powered Text-to-Speech with high-quality output
-Multi-Provider Support: Google, Azure, and OpenAI voices
-SRT Dubbing (Beta): Automatic subtitle generation and dubbing
-Multi-Voice: Support for multiple voices in a single audio file
-Automatic Language Detection from input text
-🎛️ Advanced Customization
-Speed Control: Adjustable from 0.25x to 4x
-Pitch Adjustment: Customizable from -12 to +12
-Voice Search & Filtering by provider
-Neural & Standard Voices: Choose quality that fits your needs
-💰 Credit System
-Pay-per-use: Billing based on character count (cr/1k chars)
-Cost Estimation before audio generation
-Transparent credit management with easy tracking
-🌐 Multi-Language Support
-Support for multiple languages (EN, VI, and 100+ more)
-Diverse voices by region and gender
+
+## ✨ Key Features
+
+### 🎯 Core Features
+- AI-Powered Text-to-Speech with high-quality output
+- Multi-Provider Support: Google, Azure, and OpenAI voices
+- SRT Dubbing (Beta): Automatic subtitle generation and dubbing
+- Multi-Voice: Support for multiple voices in a single audio file
+- Automatic Language Detection from input text
+
+### 🎛️ Advanced Customization
+- Speed Control: Adjustable from 0.25x to 4x
+- Pitch Adjustment: Customizable from -12 to +12
+- Voice Search & Filtering by provider
+- Neural & Standard Voices: Choose quality that fits your needs
+
+### 💰 Credit System
+- Pay-per-use: Billing based on character count (cr/1k chars)
+- Cost Estimation before audio generation
+- Transparent credit management with easy tracking
+
+### 🌐 Multi-Language Support
+- Support for multiple languages (EN, VI, and 100+ more)
+- Diverse voices by region and gender
 
 # Turborepo starter
 
